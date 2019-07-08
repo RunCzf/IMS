@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.briup.crm.dao.UserpatientMapper">
+	<resultMap id="BaseResultMap" type="com.briup.crm.common.bean.Userpatient">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="price" property="price" jdbcType="DOUBLE" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="symptom" property="symptom" jdbcType="VARCHAR" />
+		<result column="advice" property="advice" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="patient_id" property="patientId" jdbcType="INTEGER" />
+		<result column="date" property="date" jdbcType="TIMESTAMP" />
+		<result column="complained" property="complained" jdbcType="VARCHAR" />
+		<result column="pastMedicalHistory" property="pastmedicalhistory"
+			jdbcType="VARCHAR" />
+		<result column="historyOfPresentIllness" property="historyofpresentillness"
+			jdbcType="VARCHAR" />
+		<result column="physicalExamResult" property="physicalexamresult"
+			jdbcType="VARCHAR" />
+		<association property="patient" foreignColumn="patient_id"
+			javaType="com.briup.crm.common.bean.Patient">
+			<id column="id" property="id" jdbcType="INTEGER" />
+			<result column="name" property="name" jdbcType="VARCHAR" />
+			<result column="age" property="age" jdbcType="INTEGER" />
+			<result column="gender" property="gender" jdbcType="VARCHAR" />
+			<result column="birth" property="birth" jdbcType="DATE" />
+			<result column="merriage" property="merriage" jdbcType="VARCHAR" />
+			<result column="address" property="address" jdbcType="VARCHAR" />
+			<result column="drugAllergy" property="drugallergy" jdbcType="VARCHAR" />
+			<result column="cardNo" property="cardno" jdbcType="VARCHAR" />
+			<result column="balance" property="balance" jdbcType="DOUBLE" />
+		</association>
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, price, status, symptom, advice, user_id, patient_id, date,
+		complained, pastMedicalHistory,
+		historyOfPresentIllness, physicalExamResult
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.briup.crm.common.bean.UserpatientExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from userpatient
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from userpatient
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from userpatient
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.briup.crm.common.bean.UserpatientExample">
+		delete from userpatient
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.briup.crm.common.bean.Userpatient">
+		insert into userpatient (id, price, status,
+		symptom, advice, user_id,
+		patient_id, date, complained,
+		pastMedicalHistory, historyOfPresentIllness,
+		physicalExamResult)
+		values (#{id,jdbcType=INTEGER}, #{price,jdbcType=DOUBLE},
+		#{status,jdbcType=VARCHAR},
+		#{symptom,jdbcType=VARCHAR}, #{advice,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER},
+		#{patientId,jdbcType=INTEGER}, #{date,jdbcType=TIMESTAMP},
+		#{complained,jdbcType=VARCHAR},
+		#{pastmedicalhistory,jdbcType=VARCHAR},
+		#{historyofpresentillness,jdbcType=VARCHAR},
+		#{physicalexamresult,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.briup.crm.common.bean.Userpatient">
+		insert into userpatient
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="symptom != null">
+				symptom,
+			</if>
+			<if test="advice != null">
+				advice,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="patientId != null">
+				patient_id,
+			</if>
+			<if test="date != null">
+				date,
+			</if>
+			<if test="complained != null">
+				complained,
+			</if>
+			<if test="pastmedicalhistory != null">
+				pastMedicalHistory,
+			</if>
+			<if test="historyofpresentillness != null">
+				historyOfPresentIllness,
+			</if>
+			<if test="physicalexamresult != null">
+				physicalExamResult,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="price != null">
+				#{price,jdbcType=DOUBLE},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="symptom != null">
+				#{symptom,jdbcType=VARCHAR},
+			</if>
+			<if test="advice != null">
+				#{advice,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="patientId != null">
+				#{patientId,jdbcType=INTEGER},
+			</if>
+			<if test="date != null">
+				#{date,jdbcType=TIMESTAMP},
+			</if>
+			<if test="complained != null">
+				#{complained,jdbcType=VARCHAR},
+			</if>
+			<if test="pastmedicalhistory != null">
+				#{pastmedicalhistory,jdbcType=VARCHAR},
+			</if>
+			<if test="historyofpresentillness != null">
+				#{historyofpresentillness,jdbcType=VARCHAR},
+			</if>
+			<if test="physicalexamresult != null">
+				#{physicalexamresult,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.briup.crm.common.bean.UserpatientExample"
+		resultType="java.lang.Integer">
+		select count(*) from userpatient
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update userpatient
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
+			</if>
+			<if test="record.price != null">
+				price = #{record.price,jdbcType=DOUBLE},
+			</if>
+			<if test="record.status != null">
+				status = #{record.status,jdbcType=VARCHAR},
+			</if>
+			<if test="record.symptom != null">
+				symptom = #{record.symptom,jdbcType=VARCHAR},
+			</if>
+			<if test="record.advice != null">
+				advice = #{record.advice,jdbcType=VARCHAR},
+			</if>
+			<if test="record.userId != null">
+				user_id = #{record.userId,jdbcType=INTEGER},
+			</if>
+			<if test="record.patientId != null">
+				patient_id = #{record.patientId,jdbcType=INTEGER},
+			</if>
+			<if test="record.date != null">
+				date = #{record.date,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.complained != null">
+				complained = #{record.complained,jdbcType=VARCHAR},
+			</if>
+			<if test="record.pastmedicalhistory != null">
+				pastMedicalHistory = #{record.pastmedicalhistory,jdbcType=VARCHAR},
+			</if>
+			<if test="record.historyofpresentillness != null">
+				historyOfPresentIllness =
+				#{record.historyofpresentillness,jdbcType=VARCHAR},
+			</if>
+			<if test="record.physicalexamresult != null">
+				physicalExamResult = #{record.physicalexamresult,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update userpatient
+		set id = #{record.id,jdbcType=INTEGER},
+		price = #{record.price,jdbcType=DOUBLE},
+		status = #{record.status,jdbcType=VARCHAR},
+		symptom = #{record.symptom,jdbcType=VARCHAR},
+		advice = #{record.advice,jdbcType=VARCHAR},
+		user_id = #{record.userId,jdbcType=INTEGER},
+		patient_id = #{record.patientId,jdbcType=INTEGER},
+		date = #{record.date,jdbcType=TIMESTAMP},
+		complained = #{record.complained,jdbcType=VARCHAR},
+		pastMedicalHistory = #{record.pastmedicalhistory,jdbcType=VARCHAR},
+		historyOfPresentIllness =
+		#{record.historyofpresentillness,jdbcType=VARCHAR},
+		physicalExamResult = #{record.physicalexamresult,jdbcType=VARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.briup.crm.common.bean.Userpatient">
+		update userpatient
+		<set>
+			<if test="price != null">
+				price = #{price,jdbcType=DOUBLE},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="symptom != null">
+				symptom = #{symptom,jdbcType=VARCHAR},
+			</if>
+			<if test="advice != null">
+				advice = #{advice,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="patientId != null">
+				patient_id = #{patientId,jdbcType=INTEGER},
+			</if>
+			<if test="date != null">
+				date = #{date,jdbcType=TIMESTAMP},
+			</if>
+			<if test="complained != null">
+				complained = #{complained,jdbcType=VARCHAR},
+			</if>
+			<if test="pastmedicalhistory != null">
+				pastMedicalHistory = #{pastmedicalhistory,jdbcType=VARCHAR},
+			</if>
+			<if test="historyofpresentillness != null">
+				historyOfPresentIllness =
+				#{historyofpresentillness,jdbcType=VARCHAR},
+			</if>
+			<if test="physicalexamresult != null">
+				physicalExamResult = #{physicalexamresult,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.briup.crm.common.bean.Userpatient">
+		update userpatient
+		set price = #{price,jdbcType=DOUBLE},
+		status = #{status,jdbcType=VARCHAR},
+		symptom = #{symptom,jdbcType=VARCHAR},
+		advice = #{advice,jdbcType=VARCHAR},
+		user_id = #{userId,jdbcType=INTEGER},
+		patient_id = #{patientId,jdbcType=INTEGER},
+		date = #{date,jdbcType=TIMESTAMP},
+		complained = #{complained,jdbcType=VARCHAR},
+		pastMedicalHistory = #{pastmedicalhistory,jdbcType=VARCHAR},
+		historyOfPresentIllness = #{historyofpresentillness,jdbcType=VARCHAR},
+		physicalExamResult = #{physicalexamresult,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="findAllUserpatient" parameterType="com.briup.crm.common.bean.Userpatient"
+		resultMap="BaseResultMap">
+		select distinct u.*,r.*
+		from userpatient u,patient r
+		where r.id = u.patient_id and u.status='未处理' and
+		user_id=#{userId,jdbcType=INTEGER}
+	</select>
+	<select id="findUserpatient" parameterType="com.briup.crm.common.bean.Userpatient"
+		resultMap="BaseResultMap">
+		select u.*,r.*
+		from userpatient u,patient r
+		where r.id = u.patient_id and u.status='已处理' and
+		user_id=#{userId,jdbcType=INTEGER}
+	</select>
+</mapper>
